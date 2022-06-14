@@ -8,52 +8,50 @@ import { LoginRequestPayload } from './login.request.payload';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
   loginRequestPayload!: LoginRequestPayload;
   isError!: boolean;
 
-  constructor(private authService: AuthService, private activatedRoute: ActivatedRoute,
-    private router: Router, private toastr: ToastrService) { 
+  constructor(
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     this.loginRequestPayload = {
       email: '',
-      password: ''
-    }
+      password: '',
+    };
   }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
-    
-
-      
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
     });
 
-    this.activatedRoute.queryParams
-      .subscribe(params => {
-        if (params['registered'] !== undefined && params['registered'] === 'true') {
-          this.toastr.success('Registro completado');
-        }
-      });
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (
+        params['registered'] !== undefined &&
+        params['registered'] === 'true'
+      ) {
+        this.toastr.success('Registro completado');
+      }
+    });
   }
 
-  login(){
+  login() {
     this.loginRequestPayload.email = this.loginForm.get('email')?.value;
     this.loginRequestPayload.password = this.loginForm.get('password')?.value;
 
-    this.authService.login(this.loginRequestPayload).subscribe(data => {
+    this.authService.login(this.loginRequestPayload).subscribe((data) => {
       if (data) {
         this.isError = false;
-        console.log(data);
         this.router.navigateByUrl('list');
         this.toastr.success('Logeo completado');
-        
-      } else {
-        this.isError = true;
       }
     });
   }
