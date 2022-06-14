@@ -1,0 +1,141 @@
+<div class="body">
+  <div class="container">
+    <div class="row">
+      <hr />
+      <div *ngIf="edit">
+        <form [formGroup]="updateForm" (ngSubmit)="updateUser()">
+          <h1 id="edit">Editar Usuario</h1>
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label text-md-right">Name</label>
+            <div class="col-md-6">
+              <input
+                type="text"
+                [formControlName]="'name'"
+                class="form-control"
+                required
+                autofocus
+              />
+              <span
+                *ngIf="
+                  !updateForm.get('name')!.valid &&
+                  updateForm.get('name')!.touched
+                "
+              >
+                Introduzca un nombre valido
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-4 col-form-label text-md-right">Surname</label>
+            <div class="col-md-6">
+              <input
+                type="text"
+                [formControlName]="'surname'"
+                class="form-control"
+                required
+                autofocus
+              />
+              <span
+                *ngIf="
+                  !updateForm.get('surname')!.valid &&
+                  updateForm.get('surname')!.touched
+                "
+              >
+                Introduzca un apellido valido
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label
+              for="email_address"
+              class="col-md-4 col-form-label text-md-right"
+              >Email
+            </label>
+            <div class="col-md-6">
+              <input
+                type="text"
+                [formControlName]="'email'"
+                id="email_address"
+                class="form-control"
+                name="email-address"
+                required
+                autofocus
+              />
+              <span
+                *ngIf="
+                  !updateForm.get('email')!.valid &&
+                  updateForm.get('email')!.touched
+                "
+              >
+                Introduzca un email valido
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="password" class="col-md-4 col-form-label text-md-right"
+              >Password</label
+            >
+            <div class="col-md-6">
+              <input
+                type="password"
+                [formControlName]="'password'"
+                id="password"
+                class="form-control"
+                name="password"
+                required
+              />
+              <span
+                *ngIf="
+                  !updateForm.get('password')!.valid &&
+                  updateForm.get('password')!.touched
+                "
+              >
+                Introduzca un contraseña valida
+              </span>
+            </div>
+          </div>
+
+          <span>
+            <button type="submit" class="update">Actualizar</button>
+          </span>
+          <span>
+            <button class="cerrar" (click)="closeEdit()">Cerrar</button>
+          </span>
+        </form>
+      </div>
+
+      <div class="col-md-9">
+        <div class="row post" *ngFor="let user of users; let indice = index">
+          <div class="col-md-11">
+            <div>
+              <h3>{{ user.name }}</h3>
+              <div *ngIf="indice === showId">
+                <p>{{ user.surname }}</p>
+                <p>{{ user.email }}</p>
+              </div>
+              <button class="btn btn-success" (click)="showUser(indice)">
+                <i class="fa fa-eye"></i> Mostrar
+              </button>
+              <button
+                class="btn btn-warning"
+                href="#edit"
+                (click)="editUser(user.id)"
+              >
+                <i class="fa fa-pencil"></i> Editar
+              </button>
+              <button class="btn btn-danger" (click)="deleteUser(user.id)">
+                <i class="fa fa-ban"></i> Borrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
